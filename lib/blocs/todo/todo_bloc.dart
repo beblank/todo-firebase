@@ -10,12 +10,12 @@ class TodoBloc extends Bloc<TodoEvent, TodoState>{
   final TodoRepo _todoRepo;
   StreamSubscription _todoSubscription;
 
-  TodoBloc(@required TodoRepo todoRepo)
+  TodoBloc({@required TodoRepo todoRepo})
   : assert(todoRepo != null),
   _todoRepo = todoRepo;
 
   @override
-  TodoState get initialState => null;
+  TodoState get initialState => TodoLoading();
 
   @override
   Stream<TodoState> mapEventToState(TodoEvent event) async* {
