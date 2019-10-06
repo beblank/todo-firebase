@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_firebase/blocs/list_todo/list_todo.dart';
 import 'package:todo_firebase/blocs/todo/todo.dart';
+import 'package:todo_firebase/screens/screens.dart';
 import 'package:todo_firebase/widgets/todo_item.dart';
 import 'package:todo_firebase/widgets/widgets.dart';
 
@@ -29,7 +30,16 @@ class ListTodo extends StatelessWidget {
                     todoBloc.dispatch(DeleteTodo(todo));
                     Scaffold.of(context).showSnackBar(SnackBar(content: Text('deleted'),));
                   },
-                  onTap: (){},
+                  onTap: () async {
+                  final removedTodo = await Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) {
+                      return DetailScreen(id: todo.id);
+                    }),
+                  );
+                  if (removedTodo != null) {
+                    Scaffold.of(context).showSnackBar(SnackBar(content: Text('deleted'),));
+                  }
+                },
                   onCheckboxChanged: (_){
                     todoBloc.dispatch(UpdateTodo(todo.copyWith(complete: !todo.complete)));
                   },

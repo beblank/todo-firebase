@@ -32,7 +32,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState>{
     }
   }
 
-  _mapLoadTodoToState() async* {
+  Stream<TodoState> _mapLoadTodoToState() async* {
     _todoSubscription?.cancel();
     _todoSubscription = _todoRepo.todos().listen((data){
       dispatch(TodosUpdated(data));

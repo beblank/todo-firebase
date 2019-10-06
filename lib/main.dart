@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:repository/repository.dart';
+import 'package:repository/todos/models/models.dart';
 import 'package:todo_firebase/blocs/auth/auth_bloc.dart';
 import 'package:todo_firebase/blocs/blocs.dart';
 import 'package:todo_firebase/blocs/list_todo/list_todo.dart';
 import 'package:todo_firebase/blocs/todo/todo_bloc.dart';
-import 'package:todo_firebase/screens/home_screens.dart';
 import 'package:todo_firebase/widgets/loading_indicator.dart';
 
 import 'blocs/auth/auth.dart';
 import 'blocs/todo/todo.dart';
+import 'screens/screens.dart';
 
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
@@ -57,6 +58,17 @@ class App extends StatelessWidget {
                 }
                 return LoadingIndicator();
               },
+            );
+          },
+          '/addTodo': (context){
+            final todoBloc = BlocProvider.of<TodoBloc>(context);
+            return AddEditScreen(
+              onSave: (task, note){
+                todoBloc.dispatch(
+                  AddTodo(Todo(task, note:note))
+                );
+              },
+              isEditing: false,
             );
           }
         }

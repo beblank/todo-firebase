@@ -57,7 +57,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
               ),
               TextFormField(
                 initialValue: isEditing ? widget.todo.note: '',
-                maxLines: 10,,
+                maxLines: 10,
                 style: textTheme.subhead,
                 decoration: InputDecoration(
                   hintText:'Aditional Notes...'
@@ -67,7 +67,18 @@ class _AddEditScreenState extends State<AddEditScreen> {
             ],
           )
         )
-      )
+      ),
+      floatingActionButton: FloatingActionButton(
+        tooltip: isEditing ? 'Save changes' : 'Add Todo',
+        child: Icon(isEditing ? Icons.check : Icons.add),
+        onPressed: () {
+          if (_formKey.currentState.validate()) {
+            _formKey.currentState.save();
+            widget.onSave(_task, _note);
+            Navigator.pop(context);
+          }
+        },
+      ),
     );
   }
 }
