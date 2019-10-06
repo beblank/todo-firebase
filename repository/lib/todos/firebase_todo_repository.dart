@@ -1,6 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:repository/todos/models/todo.dart';
+import 'package:repository/todos/models/models.dart';
 import 'package:repository/todos/todo_repo.dart';
 
 import 'entities/entities.dart';
