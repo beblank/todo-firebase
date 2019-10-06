@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:bloc/bloc.dart';
+import 'package:todo_firebase/blocs/blocs.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  BlocSupervisor.delegate = SimpleBlocDelegate();
+  runApp(App());
+}
 
-class MyApp extends StatelessWidget {
+class App extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
