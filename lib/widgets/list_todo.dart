@@ -9,7 +9,12 @@ import 'package:todo_firebase/widgets/todo_item.dart';
 import 'package:todo_firebase/widgets/widgets.dart';
 
 class ListTodo extends StatelessWidget {
-  const ListTodo({Key key}) : super(key: key);
+  final String _userId;
+
+  const ListTodo({Key key, @required String userId})
+  : assert(userId!=null),
+  _userId = userId,
+  super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +32,13 @@ class ListTodo extends StatelessWidget {
                 return TodoItem(
                   todo: todo,
                   onDismissed: (direction){
-                    todoBloc.dispatch(DeleteTodo(todo));
+                    todoBloc.dispatch(DeleteTodo(todo, _userId));
                     Scaffold.of(context).showSnackBar(SnackBar(content: Text('deleted'),));
                   },
                   onTap: () async {
                   final removedTodo = await Navigator.of(context).push(
                     MaterialPageRoute(builder: (_) {
-                      return DetailScreen(id: todo.id);
+                      return DetailScreen(id: todo.id, userId: _userId,);
                     }),
                   );
                   if (removedTodo != null) {
@@ -41,7 +46,7 @@ class ListTodo extends StatelessWidget {
                   }
                 },
                   onCheckboxChanged: (_){
-                    todoBloc.dispatch(UpdateTodo(todo.copyWith(complete: !todo.complete)));
+                    todoBloc.dispatch(UpdateTodo(todo.copyWith(complete: !todo.complete), _userId));
                   },
                 );
               },

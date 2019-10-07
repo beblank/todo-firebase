@@ -8,14 +8,19 @@ abstract class TodoEvent extends Equatable{
 }
 
 class LoadTodo extends TodoEvent {
+  final String userId;
+
+  LoadTodo(this.userId):super([userId]);
+
   @override
-  String toString() => 'LoadTodo';
+  String toString() => 'LoadTodo {userId:$userId}';
 }
 
 class AddTodo extends TodoEvent {
   final Todo todo;
+  final String userId;
 
-  AddTodo(this.todo):super([todo]);
+  AddTodo(this.todo, this.userId):super([todo, userId]);
 
   @override
   String toString() => 'AddTodo { todo: $todo}';
@@ -23,8 +28,9 @@ class AddTodo extends TodoEvent {
 
 class UpdateTodo extends TodoEvent {
   final Todo updatedTodo;
+  final String userId;
 
-  UpdateTodo(this.updatedTodo):super([updatedTodo]);
+  UpdateTodo(this.updatedTodo, this.userId):super([updatedTodo, userId]);
 
   @override
   String toString() => 'updatedTodo {updatedTodo: $updatedTodo}';
@@ -32,8 +38,9 @@ class UpdateTodo extends TodoEvent {
 
 class DeleteTodo extends TodoEvent {
   final Todo todo;
+  final String userId;
 
-  DeleteTodo(this.todo):super([todo]);
+  DeleteTodo(this.todo, this.userId):super([todo, userId]);
 
   @override
   String toString() => 'Deleted Todo {dodo: $todo}';
@@ -41,8 +48,9 @@ class DeleteTodo extends TodoEvent {
 
 class TodosUpdated extends TodoEvent {
   final List<Todo> todos;
+  final String userId;
 
-  TodosUpdated(this.todos);
+  TodosUpdated(this.todos, this.userId);
 
   @override
   String toString() => 'Todos Updated';

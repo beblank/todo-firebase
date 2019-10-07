@@ -34,7 +34,7 @@ class App extends StatelessWidget {
           builder: (context){
             return TodoBloc(
               todoRepo: FirebaseTodoRepository()
-            )..dispatch(LoadTodo());
+            );
           },
         )
       ],
@@ -46,9 +46,10 @@ class App extends StatelessWidget {
               builder: (context, state){
                  if (state is Authenticated){
                   final todoBloc = BlocProvider.of<TodoBloc>(context);
+                  todoBloc.dispatch(LoadTodo(state.userId));
                   return BlocProvider<ListTodoBloc>(
                     builder: (context) => ListTodoBloc(todoBloc: todoBloc),
-                    child: HomeScreen(),
+                    child: HomeScreen(userId : state.userId),
                   );
                 }
                 if (state is Unauthenticated){
@@ -61,15 +62,20 @@ class App extends StatelessWidget {
             );
           },
           '/addTodo': (context){
-            final todoBloc = BlocProvider.of<TodoBloc>(context);
-            return AddEditScreen(
-              onSave: (task, note){
-                todoBloc.dispatch(
-                  AddTodo(Todo(task, note:note))
-                );
-              },
-              isEditing: false,
-            );
+            return BlocBuilder<AuthBloc, AuthState>(
+              builder: (context, state){
+                 if (state is Authenticated){
+                 final todoBloc = BlocProvider.of<TodoBloc>(context);
+                  return AddEditScreen(
+                    onSave: (task, note){
+                      todoBloc.dispatch(
+                        AddTodo(Todo(task, note:note), state.userId)
+                      );
+                    },
+                    isEditing: false,
+                  );
+                }
+              });
           }
         }
       ),

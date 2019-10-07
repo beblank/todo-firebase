@@ -7,8 +7,9 @@ import 'package:todo_firebase/screens/screens.dart';
 
 class DetailScreen extends StatelessWidget {
   final String id;
+  final String userId;
 
-  const DetailScreen({Key key, @required this.id}) : super(key: key);
+  const DetailScreen({Key key, @required this.id, @required this.userId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,7 @@ class DetailScreen extends StatelessWidget {
                 tooltip: 'Delete Todo',
                 icon: Icon(Icons.delete),
                 onPressed: (){
-                  todoBloc.dispatch(DeleteTodo(todo));
+                  todoBloc.dispatch(DeleteTodo(todo, userId));
                   Navigator.pop(context, todo);
                 }
               )
@@ -48,7 +49,8 @@ class DetailScreen extends StatelessWidget {
                               onChanged: (_){
                                 todoBloc.dispatch(
                                   UpdateTodo(
-                                    todo.copyWith(complete: !todo.complete)
+                                    todo.copyWith(complete: !todo.complete),
+                                    userId
                                   ));},),),
                           Expanded(
                             child: Column(
@@ -90,6 +92,7 @@ class DetailScreen extends StatelessWidget {
                               todoBloc.dispatch(
                                 UpdateTodo(
                                   todo.copyWith(task: task, note: note),
+                                  userId,
                                 ),
                               );
                             },

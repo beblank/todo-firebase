@@ -20,7 +20,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState>{
   @override
   Stream<TodoState> mapEventToState(TodoEvent event) async* {
     if (event is LoadTodo){
-      yield* _mapLoadTodoToState();
+      yield* _mapLoadTodoToState(event);
     } else if (event is AddTodo){
       yield* _mapAddTodoToState(event);
     } else if (event is UpdateTodo){
@@ -32,23 +32,24 @@ class TodoBloc extends Bloc<TodoEvent, TodoState>{
     }
   }
 
-  Stream<TodoState> _mapLoadTodoToState() async* {
+  Stream<TodoState> _mapLoadTodoToState(LoadTodo event) async* {
+   
     _todoSubscription?.cancel();
-    _todoSubscription = _todoRepo.todos().listen((data){
-      dispatch(TodosUpdated(data));
+    _todoSubscription = _todoRepo.todos(event.userId).listen((data){
+      dispatch(TodosUpdated(data, event.userId));
     });
   }
 
   Stream<TodoState> _mapAddTodoToState(AddTodo event) async* {
-    _todoRepo.addNewToDo(event.todo);
+    _todoRepo.addNewToDo(event.todo, event.userId);
   }
 
   Stream<TodoState> _mapUpdateTodoToState(UpdateTodo event) async* {
-    _todoRepo.updateTodo(event.updatedTodo);
+    _todoRepo.updateTodo(event.updatedTodo, event.userId);
   }
 
   Stream<TodoState> _mapDeleteTodoToState(DeleteTodo event) async* {
-    _todoRepo.deleteToDo(event.todo);
+    _todoRepo.deleteToDo(event.todo, event.userId);
   }
 
   Stream<TodoState> _mapTodosUpdatedToState(TodosUpdated event) async* {
